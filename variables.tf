@@ -3,8 +3,8 @@ variable "cluster_name" {
   type        = string
 }
 
-variable "aws_profile" {
-  description = "The AWS CLI profile to use"
+variable "environment" {
+  description = "Environment name (dev, staging, prod)"
   type        = string
 }
 
@@ -23,12 +23,6 @@ variable "ec2_key_name" {
   type        = string
 }
 
-variable "ec2_key" {
-  description = "The public key to inject to instances launched in the VPC"
-  type        = string
-}
-
-# Reference: https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-dedicated-instances.html
 variable "vpc_instance_tenancy" {
   description = "How are instances distributed across the underlying physical hardware"
   type        = string
@@ -74,7 +68,7 @@ variable "db_engine" {
 variable "db_instance_class" {
   description = "The instance type to use for the database instances"
   type        = string
-  default     = "db.t2.micro"
+  default     = "db.t3.micro"
 }
 
 variable "db_multi_az" {
@@ -95,26 +89,122 @@ variable "db_storage_size_in_gb" {
   default     = 20
 }
 
-variable "k8s_desired_size" {
-  description = "Desired number of worker nodes"
-  type        = number
-  default     = 2
+variable "eks_subnet_type" {
+  description = "Whether to deploy EKS in public or private subnets (public|private)"
+  type        = string
+  default     = "private"
+  validation {
+    condition     = contains(["public", "private"], var.eks_subnet_type)
+    error_message = "eks_subnet_type must be either 'public' or 'private'."
+  }
 }
 
-variable "k8s_min_size" {
-  description = "Minimum number of worker nodes"
-  type        = number
-  default     = 2
+variable "enable_nat_gateway" {
+  description = "Whether to create NAT gateways (required for private subnets)"
+  type        = bool
+  default     = true
 }
 
-variable "k8s_max_size" {
-  description = "Maximum number of worker nodes"
-  type        = number
-  default     = 2
+variable "single_nat_gateway" {
+  description = "Use a single NAT gateway for all private subnets (cost optimization)"
+  type        = bool
+  default     = false
 }
 
-variable "k8s_node_instance_types" {
-  description = "List of instance types associated with the EKS Node Group"
-  type        = list(any)
-  default     = ["t3.medium"]
+variable "enable_database" {
+  description = "Whether to create RDS database"
+  type        = bool
+  default     = true
+}
+
+variable "enable_bastion" {
+  description = "Whether to create a bastion host"
+  type        = bool
+  default     = true
+}
+
+variable "bastion_instance_type" {
+  description = "Instance type for bastion host"
+  type        = string
+  default     = "t3.micro"
+}
+
+# EKS Configuration
+variable "eks_version" {
+  description = "Kubernetes version to use for the EKS cluster"
+  type        = string
+  default     = "1.28"
+}
+
+variable "ecr_image_tag_mutability" {
+  description = "The tag mutability setting for the repository"
+  type        = string
+  default     = "MUTABLE"
+}
+
+variable "ecr_scan_on_push" {
+  description = "Indicates whether images are scanned after being pushed to the repository"
+  type        = bool
+  default     = true
+}
+
+variable "ecr_lifecycle_policy_count" {
+  description = "Number of images to keep in ECR repositories"
+  type        = number
+  default     = 30
+}
+
+# Database Configuration
+variable "db_engine_version" {
+  description = "The engine version to use"
+  type        = string
+  default     = "15.4"
+}
+
+variable "db_parameter_group_family" {
+  description = "The DB parameter group family"
+  type        = string
+  default     = "postgres15"
+}
+
+variable "db_storage_type" {
+  description = "One of standard (magnetic), gp2 (general purpose SSD), or io1 (provisioned IOPS SSD)"
+  type        = string
+  default     = "gp3"
+}
+
+variable "db_backup_retention_period" {
+  description = "The days to retain backups for"
+  type        = number
+  default     = 7
+}
+
+variable "db_backup_window" {
+  description = "The daily time range (in UTC) during which automated backups are created"
+  type        = string
+  default     = "03:00-04:00"
+}
+
+variable "db_maintenance_window" {
+  description = "The window to perform maintenance in"
+  type        = string
+  default     = "sun:04:00-sun:05:00"
+}
+
+variable "db_monitoring_interval" {
+  description = "The interval for collecting enhanced monitoring metrics"
+  type        = number
+  default     = 60
+}
+
+variable "db_deletion_protection" {
+  description = "If the DB instance should have deletion protection enabled"
+  type        = bool
+  default     = false
+}
+
+variable "tags" {
+  description = "Additional tags to apply to resources"
+  type        = map(string)
+  default     = {}
 }

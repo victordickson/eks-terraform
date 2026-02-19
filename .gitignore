@@ -1,0 +1,41 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars.backup
+.terraform/
+.terraform.lock.hcl
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Backend configuration files (contain sensitive info)
+backend-*.hcl
+
+# Environment variable files
+.env
+.env.*
+
+# SSH keys
+*.pem
+*.key
+*.pub
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+
+# Backup files
+*.backup
+*.bak
+*.orig
