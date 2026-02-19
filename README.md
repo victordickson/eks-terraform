@@ -38,8 +38,8 @@ eks-terraform-modular/
 ├── prod.tfvars                # Production environment variables
 ├── backend.hcl.template       # Backend configuration template
 ├── deploy.sh                  # Deployment script
+├── .gitignore                 # Git ignore file
 ├── README.md                  # This file
-├── MIGRATION_GUIDE.md         # EKS Auto Mode migration guide
 └── modules/
     ├── vpc/                   # VPC module
     ├── eks/                   # EKS Auto Mode module
@@ -291,7 +291,7 @@ kubectl get nodes -o wide
 
 ## Migration from Managed Node Groups
 
-If you're migrating from standard EKS with managed node groups to Auto Mode, see [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed instructions.
+If you're migrating from standard EKS with managed node groups to Auto Mode, refer to the migration documentation (not tracked in git).
 
 ## Contributing
 
@@ -305,9 +305,8 @@ If you're migrating from standard EKS with managed node groups to Auto Mode, see
 
 For issues and questions:
 1. Check the troubleshooting section
-2. Review [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for Auto Mode specifics
-3. Review AWS EKS Auto Mode documentation: https://docs.aws.amazon.com/eks/latest/userguide/automode.html
-4. Consult Terraform AWS provider documentation
+2. Review AWS EKS Auto Mode documentation: https://docs.aws.amazon.com/eks/latest/userguide/automode.html
+3. Consult Terraform AWS provider documentation
 
 ## Additional Resources
 

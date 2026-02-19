@@ -39,3 +39,7 @@ backend-*.hcl
 *.backup
 *.bak
 *.orig
+
+# Documentation (except README.md)
+*.md
+!README.md
